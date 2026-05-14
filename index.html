@@ -6,263 +6,129 @@
   <title>입구 — 등교 알림</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
-
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --bg: #f0f4f8;
-      --surface: #ffffff;
-      --border: #d8e2ec;
-      --text: #1a2533;
-      --text-sub: #5a6a7a;
-      --arrive: #0a7c5c;
-      --arrive-bg: #e0f5ee;
-      --arrive-border: #5dcaa5;
-      --escort: #1558a0;
-      --escort-bg: #e4effe;
-      --escort-border: #78a8ef;
-      --purple: #4a40b0;
-      --purple-bg: #eeedfe;
-      --accent: #1D9E75;
-      --accent-hover: #168a63;
-      --disabled-bg: #e8edf2;
-      --disabled-text: #a0aab4;
-      --radius: 14px;
-      --radius-sm: 8px;
+      --bg: #f0f4f8; --surface: #ffffff; --border: #d8e2ec;
+      --text: #1a2533; --text-sub: #5a6a7a;
+      --arrive: #0a7c5c; --arrive-bg: #e0f5ee;
+      --escort: #1558a0; --escort-bg: #e4effe;
+      --purple: #4a40b0; --purple-bg: #eeedfe;
+      --accent: #1D9E75; --accent-hover: #168a63;
+      --disabled-bg: #e8edf2; --disabled-text: #a0aab4;
+      --radius: 14px; --radius-sm: 8px;
     }
-
     body {
       font-family: 'Noto Sans KR', sans-serif;
-      background: var(--bg);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
+      background: var(--bg); min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; padding: 20px;
     }
-
     .card {
-      background: var(--surface);
-      border-radius: var(--radius);
-      border: 1px solid var(--border);
-      padding: 28px 24px;
-      width: 100%;
-      max-width: 480px;
+      background: var(--surface); border-radius: var(--radius);
+      border: 1px solid var(--border); padding: 28px 24px;
+      width: 100%; max-width: 520px;
       box-shadow: 0 2px 16px rgba(0,0,0,0.06);
     }
-
-    .header {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 24px;
-      padding-bottom: 16px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .header-icon {
-      width: 40px; height: 40px;
-      background: var(--arrive-bg);
-      border-radius: 10px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 20px;
-    }
-
+    .header { display: flex; align-items: center; gap: 10px; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+    .header-icon { width: 40px; height: 40px; background: var(--arrive-bg); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
     .header-text h1 { font-size: 17px; font-weight: 700; color: var(--text); }
     .header-text p  { font-size: 12px; color: var(--text-sub); margin-top: 2px; }
-
     .field { margin-bottom: 18px; }
-    .field > label {
-      display: block;
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--text-sub);
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      margin-bottom: 8px;
+    .field > label, .name-section > label {
+      display: block; font-size: 12px; font-weight: 700;
+      color: var(--text-sub); letter-spacing: 0.04em;
+      text-transform: uppercase; margin-bottom: 8px;
     }
-
-    /* 과정 버튼 */
-    .course-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 6px;
-    }
+    .course-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
     .course-btn {
-      padding: 10px 4px;
-      border-radius: var(--radius-sm);
-      border: 1.5px solid var(--border);
-      background: var(--surface);
-      color: var(--text-sub);
-      font-size: 13px;
-      font-weight: 500;
-      font-family: inherit;
-      cursor: pointer;
-      text-align: center;
-      transition: all 0.15s;
+      padding: 10px 4px; border-radius: var(--radius-sm);
+      border: 1.5px solid var(--border); background: var(--surface);
+      color: var(--text-sub); font-size: 13px; font-weight: 500;
+      font-family: inherit; cursor: pointer; text-align: center; transition: all 0.15s;
     }
-    .course-btn:hover { border-color: var(--purple); color: var(--purple); }
-    .course-btn.active {
-      background: var(--purple-bg);
-      border-color: var(--purple);
-      color: var(--purple);
-      font-weight: 700;
-    }
-
-    /* 학년/반 */
+    .course-btn.active { background: var(--purple-bg); border-color: var(--purple); color: var(--purple); font-weight: 700; }
     .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
     select {
-      width: 100%;
-      padding: 11px 12px;
-      border-radius: var(--radius-sm);
-      border: 1.5px solid var(--border);
-      background: var(--surface);
-      color: var(--text);
-      font-size: 15px;
-      font-family: inherit;
+      width: 100%; padding: 11px 12px; border-radius: var(--radius-sm);
+      border: 1.5px solid var(--border); background: var(--surface);
+      color: var(--text); font-size: 15px; font-family: inherit;
       appearance: none;
       background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235a6a7a' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 12px center;
-      cursor: pointer;
-      transition: border-color 0.15s;
+      background-repeat: no-repeat; background-position: right 12px center;
+      cursor: pointer; transition: border-color 0.15s;
     }
     select:focus { outline: none; border-color: var(--purple); }
     select:disabled { opacity: 0.4; cursor: not-allowed; background-color: var(--bg); }
-
-    /* 상황 버튼 */
     .type-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
     .type-btn {
-      padding: 14px 8px;
-      border-radius: var(--radius-sm);
-      border: 1.5px solid var(--border);
-      background: var(--surface);
-      color: var(--text-sub);
-      font-size: 14px;
-      font-weight: 500;
-      font-family: inherit;
-      cursor: pointer;
-      text-align: center;
-      transition: all 0.15s;
+      padding: 14px 8px; border-radius: var(--radius-sm);
+      border: 1.5px solid var(--border); background: var(--surface);
+      color: var(--text-sub); font-size: 14px; font-weight: 500;
+      font-family: inherit; cursor: pointer; text-align: center; transition: all 0.15s;
     }
     .type-btn .icon { font-size: 24px; display: block; margin-bottom: 6px; }
-    .type-btn:hover { border-color: var(--border); background: var(--bg); }
-    .type-btn.active-arrive {
-      background: var(--arrive-bg);
-      border-color: var(--arrive);
-      color: var(--arrive);
-      font-weight: 700;
+    .type-btn.active-arrive { background: var(--arrive-bg); border-color: var(--arrive); color: var(--arrive); font-weight: 700; }
+    .type-btn.active-escort { background: var(--escort-bg); border-color: var(--escort); color: var(--escort); font-weight: 700; }
+    .name-section { margin-bottom: 18px; }
+    .name-placeholder {
+      padding: 16px; border-radius: var(--radius-sm);
+      border: 1.5px dashed var(--border);
+      text-align: center; color: var(--disabled-text); font-size: 13px;
     }
-    .type-btn.active-escort {
-      background: var(--escort-bg);
-      border-color: var(--escort);
-      color: var(--escort);
-      font-weight: 700;
+    .name-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .name-btn {
+      padding: 12px 8px; border-radius: var(--radius-sm);
+      border: 1.5px solid var(--border); background: var(--surface);
+      color: var(--text); font-size: 15px; font-weight: 500;
+      font-family: inherit; cursor: pointer; text-align: center; transition: all 0.15s;
     }
-
-    /* 이름 입력 */
-    input[type="text"] {
-      width: 100%;
-      padding: 11px 14px;
-      border-radius: var(--radius-sm);
-      border: 1.5px solid var(--border);
-      font-size: 16px;
-      font-family: inherit;
-      color: var(--text);
-      transition: border-color 0.15s;
+    .name-btn:hover { border-color: var(--accent); color: var(--accent); background: #f0fdf8; }
+    .name-btn.active { background: var(--accent); border-color: var(--accent); color: white; font-weight: 700; }
+    .selected-name-bar {
+      display: none; align-items: center; justify-content: space-between;
+      padding: 10px 14px; background: #f0fdf8;
+      border: 1.5px solid var(--accent); border-radius: var(--radius-sm); margin-top: 10px;
     }
-    input[type="text"]:focus { outline: none; border-color: var(--accent); }
-    input[type="text"]::placeholder { color: var(--disabled-text); }
-
-    /* 전송 버튼 */
+    .selected-name-bar.visible { display: flex; }
+    .selected-name-text { font-size: 15px; font-weight: 700; color: var(--arrive); }
+    .clear-name-btn { font-size: 12px; color: var(--text-sub); background: none; border: none; cursor: pointer; font-family: inherit; }
     .send-btn {
-      width: 100%;
-      padding: 14px;
-      border-radius: var(--radius-sm);
-      border: none;
-      background: var(--accent);
-      color: white;
-      font-size: 16px;
-      font-weight: 700;
-      font-family: inherit;
-      cursor: pointer;
-      transition: background 0.15s, transform 0.1s;
-      margin-top: 4px;
+      width: 100%; padding: 14px; border-radius: var(--radius-sm);
+      border: none; background: var(--accent); color: white;
+      font-size: 16px; font-weight: 700; font-family: inherit;
+      cursor: pointer; transition: background 0.15s, transform 0.1s; margin-top: 4px;
     }
     .send-btn:hover:not(:disabled) { background: var(--accent-hover); }
     .send-btn:active:not(:disabled) { transform: scale(0.98); }
-    .send-btn:disabled {
-      background: var(--disabled-bg);
-      color: var(--disabled-text);
-      cursor: not-allowed;
-    }
-
-    /* 전송 완료 토스트 */
+    .send-btn:disabled { background: var(--disabled-bg); color: var(--disabled-text); cursor: not-allowed; }
     .toast {
-      position: fixed;
-      bottom: 28px;
-      left: 50%;
+      position: fixed; bottom: 28px; left: 50%;
       transform: translateX(-50%) translateY(80px);
-      background: #1a2533;
-      color: white;
-      padding: 12px 24px;
-      border-radius: 30px;
-      font-size: 14px;
-      font-weight: 500;
-      opacity: 0;
-      transition: all 0.3s ease;
-      white-space: nowrap;
-      z-index: 999;
+      background: #1a2533; color: white;
+      padding: 12px 24px; border-radius: 30px;
+      font-size: 14px; font-weight: 500; opacity: 0;
+      transition: all 0.3s ease; white-space: nowrap; z-index: 999;
     }
-    .toast.show {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-    }
-
-    /* 교실 화면 링크 */
-    .classroom-link {
-      margin-top: 16px;
-      text-align: center;
-    }
-    .classroom-link a {
-      font-size: 13px;
-      color: var(--text-sub);
-      text-decoration: none;
-      border-bottom: 1px dashed var(--border);
-      padding-bottom: 1px;
-    }
-    .classroom-link a:hover { color: var(--accent); border-color: var(--accent); }
-
-    /* Firebase 상태 표시 */
-    .status-dot {
-      display: inline-block;
-      width: 7px; height: 7px;
-      border-radius: 50%;
-      background: #ccc;
-      margin-right: 5px;
-      vertical-align: middle;
-    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .classroom-link { margin-top: 16px; text-align: center; }
+    .classroom-link a { font-size: 13px; color: var(--text-sub); text-decoration: none; border-bottom: 1px dashed var(--border); padding-bottom: 1px; }
+    .classroom-link a:hover { color: var(--accent); }
+    .status-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: #ccc; margin-right: 5px; vertical-align: middle; }
     .status-dot.connected { background: #1D9E75; }
-    .status-dot.error { background: #e24b4a; }
+    .status-dot.error     { background: #e24b4a; }
     .status-text { font-size: 11px; color: var(--text-sub); vertical-align: middle; }
   </style>
 </head>
 <body>
-
 <div class="card">
   <div class="header">
     <div class="header-icon">🚪</div>
     <div class="header-text">
       <h1>등교 알림 — 입구</h1>
-      <p>
-        <span class="status-dot" id="status-dot"></span>
-        <span class="status-text" id="status-text">연결 중...</span>
-      </p>
+      <p><span class="status-dot" id="status-dot"></span><span class="status-text" id="status-text">연결 중...</span></p>
     </div>
   </div>
 
-  <!-- 과정 선택 -->
   <div class="field">
     <label>과정 선택</label>
     <div class="course-grid">
@@ -274,56 +140,44 @@
     </div>
   </div>
 
-  <!-- 학년 / 반 -->
   <div class="field">
     <label>학년 / 반</label>
     <div class="row2">
-      <select id="grade" disabled>
-        <option value="">학년 선택</option>
-      </select>
+      <select id="grade" disabled><option value="">학년 선택</option></select>
       <select id="class" disabled>
         <option value="">반 선택</option>
-        <option>1반</option>
-        <option>2반</option>
-        <option>3반</option>
       </select>
     </div>
   </div>
 
-  <!-- 상황 선택 -->
   <div class="field">
     <label>상황 선택</label>
     <div class="type-grid">
-      <button class="type-btn" data-type="arrive">
-        <span class="icon">🏠</span>학생 도착
-      </button>
-      <button class="type-btn" data-type="escort">
-        <span class="icon">🚶</span>학생 마중
-      </button>
+      <button class="type-btn" data-type="arrive"><span class="icon">🏠</span>학생 도착</button>
+      <button class="type-btn" data-type="escort"><span class="icon">🚶</span>학생 마중</button>
     </div>
   </div>
 
-  <!-- 학생 이름 -->
-  <div class="field">
+  <div class="name-section">
     <label>학생 이름</label>
-    <input type="text" id="student-name" placeholder="이름을 입력하세요" maxlength="10" />
+    <div class="name-placeholder" id="name-placeholder">과정 · 학년 · 반을 먼저 선택하세요</div>
+    <div class="name-grid" id="name-grid" style="display:none;"></div>
+    <div class="selected-name-bar" id="selected-name-bar">
+      <span class="selected-name-text" id="selected-name-text"></span>
+      <button class="clear-name-btn" id="clear-name-btn">✕ 선택 취소</button>
+    </div>
   </div>
 
   <button class="send-btn" id="send-btn" disabled>교실로 알림 전송 →</button>
-
-  <div class="classroom-link">
-    <a href="classroom.html">📺 교실 화면으로 이동</a>
-  </div>
+  <div class="classroom-link"><a href="classroom.html">📺 교실 화면으로 이동</a></div>
 </div>
 
-<div class="toast" id="toast">✅ 알림을 전송했습니다</div>
+<div class="toast" id="toast"></div>
 
-<!-- ✅ Firebase SDK -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
   import { getDatabase, ref, push, serverTimestamp, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-  // ⚠️ 아래 설정을 Firebase 콘솔에서 복사한 값으로 교체하세요
   const firebaseConfig = {
     apiKey: "AIzaSyDHJXa8Q2gn_Ts9gR55w6gw57M3rVOhHgk",
     authDomain: "kyoungeun.firebaseapp.com",
@@ -335,104 +189,192 @@
   };
 
   const app = initializeApp(firebaseConfig);
-  const db = getDatabase(app);
+  const db  = getDatabase(app);
 
-  // 연결 상태 감지
-  const connectedRef = ref(db, ".info/connected");
-  onValue(connectedRef, (snap) => {
+  onValue(ref(db, ".info/connected"), snap => {
     const dot = document.getElementById("status-dot");
     const txt = document.getElementById("status-text");
-    if (snap.val() === true) {
-      dot.className = "status-dot connected";
-      txt.textContent = "서버 연결됨";
-    } else {
-      dot.className = "status-dot error";
-      txt.textContent = "연결 끊김";
-    }
+    dot.className = "status-dot " + (snap.val() ? "connected" : "error");
+    txt.textContent = snap.val() ? "서버 연결됨" : "연결 끊김";
   });
 
-  // ── 상태 ──
+  // ────────────────────────────────────────────────
+  // ✏️ 학생 명단을 여기에 입력하세요
+  // 형식: "과정_학년_반": ["이름1", "이름2", ...]
+  const students = {
+    "유치원_만3세_1반": ["김민준", "이서연", "박지호"],
+    "유치원_만4세_1반": ["최수아", "정하준", "강예린"],
+    "유치원_만5세_1반": ["윤시우", "임채원", "한지유"],
+    "초등_1학년_1반": ["김도현", "이수민", "박지훈", "최예은", "정민서"],
+    "초등_1학년_2반": ["강태양", "윤하은", "임준혁", "한소율"],
+    "초등_2학년_1반": ["오지민", "신채영", "류민호", "배수진"],
+    "초등_2학년_2반": ["장우진", "권나은", "노태현", "석지원"],
+    "초등_3학년_1반": ["조현우", "안서현", "황민재", "문채린"],
+    "초등_4학년_1반": ["김하늘", "이건우", "박소연", "최준영"],
+    "초등_5학년_1반": ["정시온", "강민아", "윤준서", "임지수"],
+    "초등_6학년_1반": ["한동현", "오예진", "신우빈", "류하린"],
+    "중등_1학년_1반": ["배준혁", "장수아", "권민준", "노지현"],
+    "중등_2학년_1반": ["석현서", "조예린", "안태양", "황소율"],
+    "중등_3학년_1반": ["문지훈", "김나은", "이민재", "박채원"],
+    "고등_1학년_1반": ["최우진", "정하린", "강준서", "윤시현"],
+    "고등_2학년_1반": ["임소연", "한민호", "오태현", "신지원"],
+    "고등_3학년_1반": ["류채영", "배수진", "장현우", "권서연"],
+    "전공과_1학년_1반": ["노민준", "석예은", "조하준", "안채린"],
+    "전공과_2학년_1반": ["황지훈", "문수아", "김우빈", "이하은"],
+  };
+  // ────────────────────────────────────────────────
+
   const gradeMap = {
-    "유치원": ["만3세", "만4세", "만5세"],
+    "유치원": ["만3세","만4세","만5세"],
     "초등":   ["1학년","2학년","3학년","4학년","5학년","6학년"],
     "중등":   ["1학년","2학년","3학년"],
     "고등":   ["1학년","2학년","3학년"],
     "전공과": ["1학년","2학년"],
   };
 
+  // 과정_학년별 반 목록 (전공과 1학년만 3반, 나머지는 모두 2반)
+  const classMap = {
+    "유치원_만3세": ["1반","2반"],
+    "유치원_만4세": ["1반","2반"],
+    "유치원_만5세": ["1반","2반"],
+    "초등_1학년":   ["1반","2반"],
+    "초등_2학년":   ["1반","2반"],
+    "초등_3학년":   ["1반","2반"],
+    "초등_4학년":   ["1반","2반"],
+    "초등_5학년":   ["1반","2반"],
+    "초등_6학년":   ["1반","2반"],
+    "중등_1학년":   ["1반","2반"],
+    "중등_2학년":   ["1반","2반"],
+    "중등_3학년":   ["1반","2반"],
+    "고등_1학년":   ["1반","2반"],
+    "고등_2학년":   ["1반","2반"],
+    "고등_3학년":   ["1반","2반"],
+    "전공과_1학년": ["1반","2반","3반"],
+    "전공과_2학년": ["1반","2반"],
+  };
+
   let selectedCourse = null;
   let selectedType   = null;
+  let selectedName   = null;
 
-  const gradeEl  = document.getElementById("grade");
-  const classEl  = document.getElementById("class");
-  const nameEl   = document.getElementById("student-name");
-  const sendBtn  = document.getElementById("send-btn");
+  const gradeEl         = document.getElementById("grade");
+  const classEl         = document.getElementById("class");
+  const sendBtn         = document.getElementById("send-btn");
+  const namePlaceholder = document.getElementById("name-placeholder");
+  const nameGrid        = document.getElementById("name-grid");
+  const selectedBar     = document.getElementById("selected-name-bar");
+  const selectedText    = document.getElementById("selected-name-text");
 
   function checkReady() {
-    const ok = selectedCourse && gradeEl.value && classEl.value && nameEl.value.trim() && selectedType;
-    sendBtn.disabled = !ok;
+    sendBtn.disabled = !(selectedCourse && gradeEl.value && classEl.value && selectedName && selectedType);
   }
 
-  // 과정 버튼
+  function renderClasses() {
+    const key = `${selectedCourse}_${gradeEl.value}`;
+    const list = classMap[key] || [];
+    classEl.innerHTML = '<option value="">반 선택</option>';
+    list.forEach(c => {
+      const opt = document.createElement("option");
+      opt.value = c; opt.textContent = c;
+      classEl.appendChild(opt);
+    });
+    classEl.value = "";
+    renderNames();
+  }
+
+  function renderNames() {
+    const key  = `${selectedCourse}_${gradeEl.value}_${classEl.value}`;
+    const list = students[key];
+
+    nameGrid.innerHTML = "";
+    selectedName = null;
+    selectedBar.classList.remove("visible");
+
+    if (!selectedCourse || !gradeEl.value || !classEl.value) {
+      namePlaceholder.textContent = "과정 · 학년 · 반을 먼저 선택하세요";
+      namePlaceholder.style.display = "block";
+      nameGrid.style.display = "none";
+      checkReady(); return;
+    }
+
+    if (!list || list.length === 0) {
+      namePlaceholder.textContent = "등록된 학생이 없습니다";
+      namePlaceholder.style.display = "block";
+      nameGrid.style.display = "none";
+      checkReady(); return;
+    }
+
+    namePlaceholder.style.display = "none";
+    nameGrid.style.display = "grid";
+
+    list.forEach(name => {
+      const btn = document.createElement("button");
+      btn.className = "name-btn";
+      btn.textContent = name;
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".name-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        selectedName = name;
+        selectedText.textContent = name + " 학생 선택됨";
+        selectedBar.classList.add("visible");
+        checkReady();
+      });
+      nameGrid.appendChild(btn);
+    });
+    checkReady();
+  }
+
+  document.getElementById("clear-name-btn").addEventListener("click", () => {
+    selectedName = null;
+    document.querySelectorAll(".name-btn").forEach(b => b.classList.remove("active"));
+    selectedBar.classList.remove("visible");
+    checkReady();
+  });
+
   document.querySelectorAll(".course-btn").forEach(btn => {
     btn.addEventListener("click", () => {
       selectedCourse = btn.dataset.course;
       document.querySelectorAll(".course-btn").forEach(b => b.classList.remove("active"));
       btn.classList.add("active");
-
-      const grades = gradeMap[selectedCourse];
       gradeEl.innerHTML = '<option value="">학년 선택</option>';
-      grades.forEach(g => {
+      gradeMap[selectedCourse].forEach(g => {
         const opt = document.createElement("option");
         opt.value = g; opt.textContent = g;
         gradeEl.appendChild(opt);
       });
-      gradeEl.disabled = false;
-      gradeEl.value = "";
-      classEl.disabled = false;
-      classEl.value = "";
-      checkReady();
+      gradeEl.disabled = false; gradeEl.value = "";
+      classEl.innerHTML = '<option value="">반 선택</option>';
+      classEl.disabled = false; classEl.value = "";
+      renderNames();
     });
   });
 
-  gradeEl.addEventListener("change", checkReady);
-  classEl.addEventListener("change", checkReady);
-  nameEl.addEventListener("input", checkReady);
+  gradeEl.addEventListener("change", renderClasses);
+  classEl.addEventListener("change", renderNames);
 
-  // 상황 버튼
   document.querySelectorAll(".type-btn").forEach(btn => {
     btn.addEventListener("click", () => {
       selectedType = btn.dataset.type;
-      document.querySelectorAll(".type-btn").forEach(b => {
-        b.classList.remove("active-arrive", "active-escort");
-      });
+      document.querySelectorAll(".type-btn").forEach(b =>
+        b.classList.remove("active-arrive", "active-escort")
+      );
       btn.classList.add(selectedType === "arrive" ? "active-arrive" : "active-escort");
       checkReady();
     });
   });
 
-  // 전송
   sendBtn.addEventListener("click", async () => {
     const data = {
-      course:    selectedCourse,
-      grade:     gradeEl.value,
-      className: classEl.value,
-      name:      nameEl.value.trim(),
-      type:      selectedType,
-      timestamp: serverTimestamp(),
-      confirmed: false,
+      course: selectedCourse, grade: gradeEl.value,
+      className: classEl.value, name: selectedName,
+      type: selectedType, timestamp: serverTimestamp(), confirmed: false,
     };
-
     try {
       await push(ref(db, "alerts"), data);
-      showToast("✅ 알림을 전송했습니다");
-
-      // 초기화
-      nameEl.value = "";
-      selectedType = null;
-      document.querySelectorAll(".type-btn").forEach(b =>
-        b.classList.remove("active-arrive", "active-escort")
-      );
+      showToast("✅ " + selectedName + " 학생 알림 전송 완료");
+      selectedName = null;
+      document.querySelectorAll(".name-btn").forEach(b => b.classList.remove("active"));
+      selectedBar.classList.remove("visible");
       checkReady();
     } catch (e) {
       showToast("❌ 전송 실패. 연결을 확인하세요.");
