@@ -25,7 +25,9 @@
       --escort-border: #185FA5;
       --escort-border-dim: #85B7EB;
       --escort-name: #042C53;
-      --purple-bg: #3C3489;
+      --purple: #4a40b0;
+      --purple-bg: #eeedfe;
+      --purple-dark: #3C3489;
       --purple-text: #CECBF6;
       --tag-arrive-bg: #085041;
       --tag-arrive-text: #9FE1CB;
@@ -43,180 +45,163 @@
       padding: 20px;
     }
 
-    .page-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+    /* 필터 카드 */
+    .filter-card {
       max-width: 640px;
       margin: 0 auto 16px;
+      background: var(--surface);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      padding: 16px 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    .filter-title {
+      font-size: 12px; font-weight: 700; color: var(--text-sub);
+      letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 10px;
+    }
+    .course-grid {
+      display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-bottom: 10px;
+    }
+    .course-btn {
+      padding: 8px 4px; border-radius: 8px;
+      border: 1.5px solid var(--border); background: var(--surface);
+      color: var(--text-sub); font-size: 12px; font-weight: 500;
+      font-family: inherit; cursor: pointer; text-align: center; transition: all 0.15s;
+    }
+    .course-btn.active {
+      background: var(--purple-bg); border-color: var(--purple);
+      color: var(--purple); font-weight: 700;
+    }
+    .filter-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    select {
+      width: 100%; padding: 9px 12px; border-radius: 8px;
+      border: 1.5px solid var(--border); background: var(--surface);
+      color: var(--text); font-size: 14px; font-family: inherit;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235a6a7a' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 12px center;
+      cursor: pointer; transition: border-color 0.15s;
+    }
+    select:focus { outline: none; border-color: var(--purple); }
+    select:disabled { opacity: 0.4; cursor: not-allowed; background-color: var(--bg); }
+
+    .filter-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      margin-top: 10px; padding: 5px 12px;
+      background: var(--purple-bg); border-radius: 20px;
+      font-size: 12px; font-weight: 700; color: var(--purple);
+    }
+    .filter-badge.hidden { display: none; }
+    .filter-reset {
+      font-size: 11px; color: var(--purple); background: none;
+      border: none; cursor: pointer; font-family: inherit;
+      font-weight: 700; text-decoration: underline;
     }
 
-    .page-title {
-      display: flex;
-      align-items: center;
-      gap: 10px;
+    /* 헤더 */
+    .page-header {
+      display: flex; align-items: center; justify-content: space-between;
+      max-width: 640px; margin: 0 auto 12px;
     }
+    .page-title { display: flex; align-items: center; gap: 10px; }
     .page-title h1 { font-size: 18px; font-weight: 700; color: var(--text); }
-
     .badge {
-      display: none;
-      background: var(--badge-bg);
-      color: white;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 700;
-      padding: 2px 9px;
+      display: none; background: var(--badge-bg); color: white;
+      border-radius: 20px; font-size: 12px; font-weight: 700; padding: 2px 9px;
     }
     .badge.visible { display: inline-block; }
-
     .header-actions { display: flex; align-items: center; gap: 10px; }
-
     .status-dot {
-      display: inline-block;
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      background: #ccc;
-      vertical-align: middle;
-      margin-right: 4px;
+      display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+      background: #ccc; vertical-align: middle; margin-right: 4px;
     }
     .status-dot.connected { background: #1D9E75; }
     .status-dot.error { background: #e24b4a; }
     .status-text { font-size: 12px; color: var(--text-sub); vertical-align: middle; }
-
     .clear-btn {
-      font-size: 12px;
-      color: var(--text-sub);
-      background: none;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 5px 12px;
-      cursor: pointer;
-      font-family: inherit;
-      transition: all 0.15s;
+      font-size: 12px; color: var(--text-sub); background: none;
+      border: 1px solid var(--border); border-radius: 8px; padding: 5px 12px;
+      cursor: pointer; font-family: inherit; transition: all 0.15s;
     }
     .clear-btn:hover { background: var(--surface); color: var(--text); }
 
     /* 알림 목록 */
-    .notif-list {
-      max-width: 640px;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .empty-state {
-      text-align: center;
-      padding: 60px 20px;
-      color: var(--text-sub);
-    }
+    .notif-list { max-width: 640px; margin: 0 auto; display: flex; flex-direction: column; gap: 10px; }
+    .empty-state { text-align: center; padding: 60px 20px; color: var(--text-sub); }
     .empty-state .icon { font-size: 40px; display: block; margin-bottom: 12px; }
     .empty-state p { font-size: 15px; }
 
     /* 알림 카드 */
     .notif-card {
-      background: var(--arrive-bg);
-      border: 2.5px solid var(--arrive-border);
-      border-radius: var(--radius-sm);
-      padding: 14px 16px;
-      cursor: pointer;
-      transition: opacity 0.3s, border-width 0.3s, transform 0.1s;
-      position: relative;
-      user-select: none;
-      -webkit-tap-highlight-color: transparent;
+      background: var(--arrive-bg); border: 2.5px solid var(--arrive-border);
+      border-radius: var(--radius-sm); padding: 14px 16px;
+      cursor: pointer; transition: opacity 0.3s, border-width 0.3s, transform 0.1s;
+      user-select: none; -webkit-tap-highlight-color: transparent;
     }
-    .notif-card.escort-card {
-      background: var(--escort-bg);
-      border-color: var(--escort-border);
-    }
+    .notif-card.escort-card { background: var(--escort-bg); border-color: var(--escort-border); }
     .notif-card:active { transform: scale(0.985); }
-
-    /* 깜빡임 — 미확인 */
-    .notif-card.unread {
-      animation: blink 1.2s ease-in-out infinite;
-    }
+    .notif-card.unread { animation: blink 1.2s ease-in-out infinite; }
     @keyframes blink {
       0%, 100% { opacity: 1; }
       50%       { opacity: 0.4; }
     }
-
-    /* 확인됨 */
     .notif-card.confirmed {
-      animation: none;
-      opacity: 0.5;
-      cursor: default;
-      border-width: 1px;
-      background: var(--arrive-bg-dim);
-      border-color: var(--arrive-border-dim);
+      animation: none; opacity: 0.5; cursor: default; border-width: 1px;
+      background: var(--arrive-bg-dim); border-color: var(--arrive-border-dim);
     }
     .notif-card.escort-card.confirmed {
-      background: var(--escort-bg-dim);
-      border-color: var(--escort-border-dim);
+      background: var(--escort-bg-dim); border-color: var(--escort-border-dim);
     }
-
-    .notif-top {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      margin-bottom: 8px;
-      flex-wrap: wrap;
-    }
-
-    .tag {
-      font-size: 11px;
-      font-weight: 700;
-      padding: 3px 9px;
-      border-radius: 20px;
-    }
+    .notif-top { display: flex; align-items: center; gap: 6px; margin-bottom: 8px; flex-wrap: wrap; }
+    .tag { font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 20px; }
     .tag-arrive { background: var(--tag-arrive-bg); color: var(--tag-arrive-text); }
     .tag-escort { background: var(--tag-escort-bg); color: var(--tag-escort-text); }
-    .tag-course { background: var(--purple-bg); color: var(--purple-text); }
+    .tag-course { background: var(--purple-dark); color: var(--purple-text); }
     .tag-class  { font-size: 12px; font-weight: 700; color: #2C2C2A; }
-
     .notif-name {
-      font-size: 22px;
-      font-weight: 700;
-      color: var(--arrive-name);
-      margin-bottom: 6px;
-      letter-spacing: -0.01em;
+      font-size: 22px; font-weight: 700; color: var(--arrive-name);
+      margin-bottom: 6px; letter-spacing: -0.01em;
     }
     .escort-card .notif-name { color: var(--escort-name); }
     .confirmed .notif-name { color: var(--text-sub); }
-
-    .notif-bottom {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
+    .notif-bottom { display: flex; align-items: center; justify-content: space-between; }
     .notif-time { font-size: 12px; color: #2C2C2A; }
     .confirmed .notif-time { color: var(--text-sub); }
-
-    .confirm-hint {
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--arrive-border);
-    }
+    .confirm-hint { font-size: 12px; font-weight: 700; color: var(--arrive-border); }
     .escort-card .confirm-hint { color: var(--escort-border); }
     .confirmed-label { font-size: 12px; color: var(--text-sub); }
 
-    /* 입구 화면 링크 */
-    .entrance-link {
-      max-width: 640px;
-      margin: 20px auto 0;
-      text-align: center;
-    }
+    .entrance-link { max-width: 640px; margin: 20px auto 0; text-align: center; }
     .entrance-link a {
-      font-size: 13px;
-      color: var(--text-sub);
-      text-decoration: none;
-      border-bottom: 1px dashed var(--border);
-      padding-bottom: 1px;
+      font-size: 13px; color: var(--text-sub); text-decoration: none;
+      border-bottom: 1px dashed var(--border); padding-bottom: 1px;
     }
     .entrance-link a:hover { color: #1D9E75; }
   </style>
 </head>
 <body>
 
+<!-- 필터 카드 -->
+<div class="filter-card">
+  <div class="filter-title">📋 우리 반 알림만 보기</div>
+  <div class="course-grid">
+    <button class="course-btn" data-course="유치원">유치원</button>
+    <button class="course-btn" data-course="초등">초등</button>
+    <button class="course-btn" data-course="중등">중등</button>
+    <button class="course-btn" data-course="고등">고등</button>
+    <button class="course-btn" data-course="전공과">전공과</button>
+  </div>
+  <div class="filter-row">
+    <select id="filter-grade" disabled><option value="">학년 선택</option></select>
+    <select id="filter-class" disabled><option value="">반 선택</option></select>
+  </div>
+  <div class="filter-badge hidden" id="filter-badge">
+    <span id="filter-badge-text"></span>
+    <button class="filter-reset" id="filter-reset">✕ 전체보기</button>
+  </div>
+</div>
+
+<!-- 헤더 -->
 <div class="page-header">
   <div class="page-title">
     <span style="font-size:22px;">🏫</span>
@@ -242,54 +227,153 @@
   <a href="index.html">🚪 입구 화면으로 이동</a>
 </div>
 
-<!-- Firebase SDK -->
 <script type="module">
-  import { initializeApp }    from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
   import { getDatabase, ref, onValue, update, remove, query, orderByChild, limitToLast }
     from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-  // ⚠️ 아래 설정을 Firebase 콘솔에서 복사한 값으로 교체하세요 (index.html과 동일)
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyDHJXa8Q2gn_Ts9gR55w6gw57M3rVOhHgk",
-  authDomain: "kyoungeun.firebaseapp.com",
-  databaseURL: "https://kyoungeun-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "kyoungeun",
-  storageBucket: "kyoungeun.firebasestorage.app",
-  messagingSenderId: "520867642837",
-  appId: "1:520867642837:web:e022c85a0e90c7cdcd915c",
-  measurementId: "G-NL6NNLHG3Q"
-};
+  const firebaseConfig = {
+    apiKey: "AIzaSyDHJXa8Q2gn_Ts9gR55w6gw57M3rVOhHgk",
+    authDomain: "kyoungeun.firebaseapp.com",
+    databaseURL: "https://kyoungeun-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "kyoungeun",
+    storageBucket: "kyoungeun.firebasestorage.app",
+    messagingSenderId: "520867642837",
+    appId: "1:520867642837:web:e022c85a0e90c7cdcd915c",
+    measurementId: "G-NL6NNLHG3Q"
+  };
 
   const app = initializeApp(firebaseConfig);
   const db  = getDatabase(app);
 
-  // 연결 상태
   onValue(ref(db, ".info/connected"), snap => {
     const dot = document.getElementById("status-dot");
     const txt = document.getElementById("status-text");
-    if (snap.val()) {
-      dot.className = "status-dot connected";
-      txt.textContent = "서버 연결됨";
-    } else {
-      dot.className = "status-dot error";
-      txt.textContent = "연결 끊김";
-    }
+    dot.className = "status-dot " + (snap.val() ? "connected" : "error");
+    txt.textContent = snap.val() ? "서버 연결됨" : "연결 끊김";
   });
 
-  const list      = document.getElementById("notif-list");
-  const emptyEl   = document.getElementById("empty-state");
-  const badgeEl   = document.getElementById("badge");
-  const cardMap   = {};   // key → DOM 카드
+  const gradeMap = {
+    "유치원": ["난초반"],
+    "초등":   ["1학년","2학년","3학년","4학년","5학년","6학년"],
+    "중등":   ["1학년","2학년","3학년"],
+    "고등":   ["1학년","2학년","3학년"],
+    "전공과": ["1학년","2학년"],
+  };
+  const classMap = {
+    "유치원_난초반": ["난초반"],
+    "초등_1학년": ["1반","2반"], "초등_2학년": ["1반","2반"],
+    "초등_3학년": ["1반","2반"], "초등_4학년": ["1반","2반"],
+    "초등_5학년": ["1반","2반"], "초등_6학년": ["1반","2반"],
+    "중등_1학년": ["1반","2반"], "중등_2학년": ["1반","2반"], "중등_3학년": ["1반","2반"],
+    "고등_1학년": ["1반","2반"], "고등_2학년": ["1반","2반"], "고등_3학년": ["1반","2반"],
+    "전공과_1학년": ["1반","2반","3반"], "전공과_2학년": ["1반","2반"],
+  };
 
-  // 최근 50개 알림 실시간 수신
+  let filterCourse = null;
+  let filterGrade  = null;
+  let filterClass  = null;
+
+  const filterGradeEl  = document.getElementById("filter-grade");
+  const filterClassEl  = document.getElementById("filter-class");
+  const filterBadge    = document.getElementById("filter-badge");
+  const filterBadgeTxt = document.getElementById("filter-badge-text");
+
+  document.querySelectorAll(".course-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      filterCourse = btn.dataset.course;
+      filterGrade  = null;
+      filterClass  = null;
+      document.querySelectorAll(".course-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+
+      filterGradeEl.innerHTML = '<option value="">학년 선택</option>';
+      gradeMap[filterCourse].forEach(g => {
+        const opt = document.createElement("option");
+        opt.value = g; opt.textContent = g;
+        filterGradeEl.appendChild(opt);
+      });
+      filterGradeEl.disabled = false; filterGradeEl.value = "";
+      filterClassEl.innerHTML = '<option value="">반 선택</option>';
+      filterClassEl.disabled = true; filterClassEl.value = "";
+      applyFilter();
+    });
+  });
+
+  filterGradeEl.addEventListener("change", () => {
+    filterGrade = filterGradeEl.value;
+    filterClass = null;
+    const key = `${filterCourse}_${filterGrade}`;
+    const classes = classMap[key] || [];
+    filterClassEl.innerHTML = '<option value="">반 선택</option>';
+    classes.forEach(c => {
+      const opt = document.createElement("option");
+      opt.value = c; opt.textContent = c;
+      filterClassEl.appendChild(opt);
+    });
+    filterClassEl.disabled = false; filterClassEl.value = "";
+    applyFilter();
+  });
+
+  filterClassEl.addEventListener("change", () => {
+    filterClass = filterClassEl.value;
+    applyFilter();
+  });
+
+  document.getElementById("filter-reset").addEventListener("click", () => {
+    filterCourse = null; filterGrade = null; filterClass = null;
+    document.querySelectorAll(".course-btn").forEach(b => b.classList.remove("active"));
+    filterGradeEl.innerHTML = '<option value="">학년 선택</option>';
+    filterGradeEl.disabled = true; filterGradeEl.value = "";
+    filterClassEl.innerHTML = '<option value="">반 선택</option>';
+    filterClassEl.disabled = true; filterClassEl.value = "";
+    applyFilter();
+  });
+
+  function applyFilter() {
+    if (filterCourse && filterGrade && filterClass) {
+      filterBadgeTxt.textContent = `${filterCourse} ${filterGrade} ${filterClass} 알림만 표시 중`;
+      filterBadge.classList.remove("hidden");
+    } else if (filterCourse && filterGrade) {
+      filterBadgeTxt.textContent = `${filterCourse} ${filterGrade} 알림만 표시 중`;
+      filterBadge.classList.remove("hidden");
+    } else if (filterCourse) {
+      filterBadgeTxt.textContent = `${filterCourse} 알림만 표시 중`;
+      filterBadge.classList.remove("hidden");
+    } else {
+      filterBadge.classList.add("hidden");
+    }
+
+    Object.entries(cardMap).forEach(([, card]) => {
+      const item = card._data;
+      let show = true;
+      if (filterCourse && item.course    !== filterCourse) show = false;
+      if (filterGrade  && item.grade     !== filterGrade)  show = false;
+      if (filterClass  && item.className !== filterClass)  show = false;
+      card.style.display = show ? "block" : "none";
+    });
+
+    updateBadge();
+
+    const visible = Object.values(cardMap).filter(c => c.style.display !== "none");
+    if (visible.length === 0) {
+      if (!emptyEl.parentNode) list.appendChild(emptyEl);
+    } else {
+      if (emptyEl.parentNode === list) emptyEl.remove();
+    }
+  }
+
+  const list    = document.getElementById("notif-list");
+  const emptyEl = document.getElementById("empty-state");
+  const badgeEl = document.getElementById("badge");
+  const cardMap = {};
+
   const alertsRef = query(ref(db, "alerts"), orderByChild("timestamp"), limitToLast(50));
 
   onValue(alertsRef, snap => {
     const data = snap.val() || {};
-    const keys = Object.keys(data).reverse(); // 최신 순
+    const keys = Object.keys(data).reverse();
 
-    // 없는 카드 추가
     keys.forEach(key => {
       if (!cardMap[key]) {
         const item = data[key];
@@ -300,33 +384,24 @@ const firebaseConfig = {
       }
     });
 
-    // 삭제된 항목 제거
     Object.keys(cardMap).forEach(key => {
-      if (!data[key]) {
-        cardMap[key].remove();
-        delete cardMap[key];
-      }
+      if (!data[key]) { cardMap[key].remove(); delete cardMap[key]; }
     });
 
-    // confirmed 상태 동기화
     keys.forEach(key => {
       const card = cardMap[key];
       if (!card) return;
-      if (data[key].confirmed && !card.classList.contains("confirmed")) {
-        markConfirmed(card);
-      }
+      if (data[key].confirmed && !card.classList.contains("confirmed")) markConfirmed(card);
     });
 
-    updateBadge();
-    if (Object.keys(cardMap).length === 0) {
-      list.appendChild(emptyEl);
-    }
+    applyFilter();
   });
 
   function createCard(key, item) {
     const isArrive = item.type === "arrive";
     const card = document.createElement("div");
     card.className = "notif-card" + (isArrive ? "" : " escort-card") + (item.confirmed ? " confirmed" : " unread");
+    card._data = item;
 
     const time = item.timestamp
       ? new Date(item.timestamp).toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit" })
@@ -347,9 +422,7 @@ const firebaseConfig = {
       </div>
     `;
 
-    if (!item.confirmed) {
-      card.addEventListener("click", () => confirmAlert(key, card));
-    }
+    if (!item.confirmed) card.addEventListener("click", () => confirmAlert(key, card));
     return card;
   }
 
@@ -367,12 +440,13 @@ const firebaseConfig = {
   }
 
   function updateBadge() {
-    const unread = document.querySelectorAll(".notif-card.unread").length;
+    const unread = Object.values(cardMap).filter(c =>
+      c.classList.contains("unread") && c.style.display !== "none"
+    ).length;
     badgeEl.textContent = unread;
     badgeEl.classList.toggle("visible", unread > 0);
   }
 
-  // 확인된 알림 지우기
   document.getElementById("clear-btn").addEventListener("click", async () => {
     const snap = await new Promise(r => onValue(alertsRef, r, { onlyOnce: true }));
     const data = snap.val() || {};
