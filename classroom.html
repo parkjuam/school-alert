@@ -243,6 +243,28 @@
     measurementId: "G-NL6NNLHG3Q"
   };
 
+
+  // 🔔 도어벨 알림음 (띵동)
+  function playDoorbell() {
+    try {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      function playNote(freq, startTime, duration, volume) {
+        const osc  = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.type = "sine";
+        osc.frequency.value = freq;
+        gain.gain.setValueAtTime(volume || 0.4, ctx.currentTime + startTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + startTime + duration);
+        osc.start(ctx.currentTime + startTime);
+        osc.stop(ctx.currentTime + startTime + duration);
+      }
+      playNote(784, 0.0, 0.6);
+      playNote(523, 0.5, 0.8);
+    } catch(e) { console.log("알림음 재생 실패:", e); }
+  }
+
   const app = initializeApp(firebaseConfig);
   const db  = getDatabase(app);
 
@@ -422,6 +444,7 @@
       </div>
     `;
 
+    if (!item.confirmed) playDoorbell();
     if (!item.confirmed) card.addEventListener("click", () => confirmAlert(key, card));
     return card;
   }
