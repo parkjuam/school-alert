@@ -4,6 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>교실 — 등교 알림</title>
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#1D9E75" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="등교알림" />
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
 
@@ -444,7 +449,20 @@
       </div>
     `;
 
-    if (!item.confirmed) playDoorbell();
+    if (!item.confirmed) {
+      playDoorbell();
+      // 서비스워커에 알림 전송 (화면 꺼져 있어도 알림 표시)
+      if (navigator.serviceWorker.controller) {
+        navigator.serviceWorker.controller.postMessage({
+          type: "NEW_ALERT",
+          name: item.name,
+          course: item.course,
+          grade: item.grade,
+          className: item.className,
+          alertType: item.type,
+        });
+      }
+    }
     if (!item.confirmed) card.addEventListener("click", () => confirmAlert(key, card));
     return card;
   }
@@ -478,6 +496,22 @@
       .map(([k]) => remove(ref(db, `alerts/${k}`)));
     await Promise.all(promises);
   });
+</script>
+<script>
+  // 서비스워커 등록
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("sw.js").then(reg => {
+      console.log("SW 등록 완료", reg);
+    }).catch(err => console.log("SW 등록 실패", err));
+  }
+
+  // 페이지 첫 탭 시 알림 권한 요청
+  document.addEventListener("click", async function requestPermission() {
+    if (Notification.permission === "default") {
+      await Notification.requestPermission();
+    }
+    document.removeEventListener("click", requestPermission);
+  }, { once: true });
 </script>
 </body>
 </html>
